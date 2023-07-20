@@ -3,8 +3,8 @@
 
 #include "Arduino.h"
 
-void setup_OLED();
-void display_text(String text, int y_loc, int text_size = 1, bool wrap = false);
-void clear_display();
+void setupOLED();
+void displayText(String text, int yLoc = 0, int textSize = 1, bool wrap = false, bool overwriteDisplay = true);
+void clearDisplay();
 
 #endif

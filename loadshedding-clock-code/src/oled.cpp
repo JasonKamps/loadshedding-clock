@@ -80,7 +80,7 @@ static const unsigned char eishkom[] PROGMEM = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-void setup_OLED()
+void setupOLED()
 {
     // initialise OLED
     if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
@@ -98,32 +98,38 @@ void setup_OLED()
     display.drawBitmap(0, 0, eishkom, 128, 64, WHITE);
     display.display();
     delay(1000);
-    clear_display();
+    clearDisplay();
 
     Serial.println("\nOLED setup complete.");
 }
 
-void display_text(String to_print, int y_loc, int text_size, bool wrap)
+void displayText(String text, int yLoc, int textSize, bool wrap, bool overwriteDisplay)
 {
     display.setTextWrap(wrap);
-    display.setTextSize(text_size);
+    display.setTextSize(textSize);
     display.setTextColor(WHITE, BLACK);
 
     // overwrite previous text
-    display.setCursor(0, y_loc);
-    for (int i = 0; i <= to_print.length(); i++)
+    display.setCursor(0, yLoc);
+    for (int i = 0; i <= text.length(); i++)
     {
         display.print(" ");
     }
 
+    // overwrite entrie display
+    if (overwriteDisplay)
+    {
+        clearDisplay();
+    }
+
     // display new text
-    display.setCursor(0, y_loc);
-    display.print(to_print);
+    display.setCursor(0, yLoc);
+    display.print(text);
     display.display();
     display.setTextWrap(false);
 }
 
-void clear_display()
+void clearDisplay()
 {
     display.clearDisplay();
 }
