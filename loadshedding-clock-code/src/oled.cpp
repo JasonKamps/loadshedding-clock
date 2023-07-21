@@ -103,6 +103,11 @@ void setupOLED()
     Serial.println("\nOLED setup complete.");
 }
 
+void displayText(String text, int yLoc, bool overwriteDisplay)
+{
+    displayText(text, yLoc, 1, false, overwriteDisplay);
+}
+
 void displayText(String text, int yLoc, int textSize, bool wrap, bool overwriteDisplay)
 {
     display.setTextWrap(wrap);

@@ -30,6 +30,14 @@ void setup()
 
   // WiFi
   setupWiFi();
+
+  // display details
+  readConfig();
+  Serial.println("API Token:" + String(apiToken));
+  Serial.println("Area Name: " + String(areaName));
+  displayText("API: " + String(apiToken), 0, 1, true);
+  displayText("Area: " + String(areaName), 30, 1, true, false);
+  delay(2000);
 }
 
 String dots = "";
