@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "oled.h"
 #include "connectWiFi.h"
+#include "storage.h"
+#include "dateTime.h"
 
 const int RESET_PIN = 36;
 
@@ -49,6 +51,11 @@ void setup()
   displayText("API: " + apiToken, 0, 1, true);
   displayText("Area: " + areaName, 30, 1, true, false);
   delay(2000);
+
+  // date and time
+  setupDateTime();
+
+  clearDisplay();
 }
 
 String dots = "";
@@ -57,6 +64,10 @@ void loop()
 {
   // display an increasing number of dots
   dots += ".";
-  displayText(dots, 0, 1, true);
+  displayText(dots, 0, 1, true, false);
+
+  // display date and time
+  displayText(getDateTimeString(), 30, 1, true, false);
+
   delay(500);
 }
