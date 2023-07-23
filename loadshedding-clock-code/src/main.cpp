@@ -19,24 +19,35 @@ void setup()
   // OLED
   setupOLED();
 
+  // storage
+  setupStorage();
+
   // reset button
   pinMode(RESET_PIN, INPUT_PULLUP);
   if (digitalRead(RESET_PIN) == LOW)
   {
-    displayText("Reset button pressed.");
-    delay(1000);
+    // short press
+    displayText("Resetting WiFi...");
+    delay(5000);
     resetWiFi();
+
+    if (digitalRead(RESET_PIN) == LOW)
+    {
+      // long press
+      displayText("Resetting storage...", 10, false);
+      delay(5000);
+      resetStorage();
+    }
   }
 
   // WiFi
   setupWiFi();
 
-  // display details
-  readConfig();
-  Serial.println("API Token:" + String(apiToken));
-  Serial.println("Area Name: " + String(areaName));
-  displayText("API: " + String(apiToken), 0, 1, true);
-  displayText("Area: " + String(areaName), 30, 1, true, false);
+  // display stored values
+  String apiToken = readString("apiToken");
+  String areaName = readString("areaName");
+  displayText("API: " + apiToken, 0, 1, true);
+  displayText("Area: " + areaName, 30, 1, true, false);
   delay(2000);
 }
 

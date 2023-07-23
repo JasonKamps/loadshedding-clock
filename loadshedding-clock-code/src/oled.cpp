@@ -100,7 +100,7 @@ void setupOLED()
     delay(1000);
     clearDisplay();
 
-    Serial.println("\nOLED setup complete.");
+    Serial.println("OLED setup complete.");
 }
 
 void displayText(String text, int yLoc, bool overwriteDisplay)
