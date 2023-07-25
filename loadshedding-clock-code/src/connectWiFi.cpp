@@ -28,13 +28,18 @@ void saveConfigCallback()
     shouldSaveConfig = true;
 }
 
-void setupWiFi()
+/**
+ * Connects to WiFi using WiFiManager.
+ * 
+ * @return True if custom parameters were saved, false otherwise.
+ */
+boolean setupWiFi()
 {
     // get API token and area name from storage
     char apiToken[API_TOKEN_LENGTH];
     char areaName[AREA_NAME_LENGTH];
     strcpy(apiToken, readString("apiToken").c_str());
-    strcpy(areaName, readString("areaName").c_str());
+    strcpy(areaName, readString("userAreaName").c_str());
 
     Serial.println("\nConnecting to WiFi..");
     displayText("Connecting to WiFi...");
@@ -66,8 +71,10 @@ void setupWiFi()
     if (shouldSaveConfig)
     {
         writeString("apiToken", String(apiToken));
-        writeString("areaName", String(areaName));
+        writeString("userAreaName", String(areaName));
+        return true;
     }
+    return false;
 }
 
 void resetWiFi()

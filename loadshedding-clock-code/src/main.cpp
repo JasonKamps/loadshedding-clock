@@ -3,6 +3,7 @@
 #include "connectWiFi.h"
 #include "storage.h"
 #include "dateTime.h"
+#include "api.h"
 
 const int RESET_PIN = 36;
 
@@ -43,17 +44,27 @@ void setup()
   }
 
   // WiFi
-  setupWiFi();
+  boolean customParamsSaved = setupWiFi();
 
-  // display stored values
-  String apiToken = readString("apiToken");
-  String areaName = readString("areaName");
-  displayText("API: " + apiToken, 0, 1, true);
-  displayText("Area: " + areaName, 30, 1, true, false);
+  // display user info from storage
+  displayText("API: " + readString("apiToken"), 0, 1, true);
+  displayText("User area: " + readString("userAreaName"), 30, 1, true, false);
   delay(2000);
 
   // date and time
   setupDateTime();
+
+  // API
+  if (customParamsSaved)
+  {
+    // only retrieve area if custom parameters were saved (don't want to waste API calls)
+    retrieveArea();
+  }
+
+  // display area info from storage
+  displayText("Area: " + readString("areaName"), 0, 1, true);
+  displayText("Area ID: " + readString("areaId"), 30, 1, true, false);
+  delay(2000);
 
   clearDisplay();
 }

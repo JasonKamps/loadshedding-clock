@@ -6,7 +6,7 @@
 #include "oled.h"
 #include "storage.h"
 
-void setupWiFi();
+boolean setupWiFi();
 void resetWiFi();
 
 #endif
