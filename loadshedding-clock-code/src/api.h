@@ -8,5 +8,7 @@
 #include "storage.h"
 
 void retrieveArea();
+void retrieveEvents();
+int getAllowanceUsage();
 
 #endif

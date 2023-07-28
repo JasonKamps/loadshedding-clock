@@ -7,5 +7,6 @@
 
 void setupDateTime();
 String getDateTimeString();
+int32_t getDateTimeEpoch();
 
 #endif

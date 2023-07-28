@@ -6,6 +6,7 @@
 #include "api.h"
 
 const int RESET_PIN = 36;
+const int API_CALL_INTERVAL = 30; // minutes
 
 void setup()
 {
@@ -60,6 +61,24 @@ void setup()
     // only retrieve area if custom parameters were saved (don't want to waste API calls)
     retrieveArea();
   }
+
+  // retrieve events if sufficient time has passed since last retrieval
+  int32_t lastRetrievalEpoch = readLong("lastRetrieval");
+  if (getDateTimeEpoch() - lastRetrievalEpoch > (API_CALL_INTERVAL * 60))
+  {
+    Serial.println("Retrieving events. It has been more than " + String(API_CALL_INTERVAL) + " minutes since last retrieval.");
+    retrieveEvents();
+    writeLong("lastRetrieval", getDateTimeEpoch());
+  }
+  else
+  {
+    Serial.println("Not retrieving events. It has only been " + String((getDateTimeEpoch() - lastRetrievalEpoch) / 60.0) + " minutes since last retrieval.");
+  }
+
+  // read and print events
+  DynamicJsonDocument doc = readEvents();
+  serializeJsonPretty(doc, Serial);
+  Serial.println();
 
   // display area info from storage
   displayText("Area: " + readString("areaName"), 0, 1, true);

@@ -27,3 +27,15 @@ String getDateTimeString()
     strftime(buffer, sizeof(buffer), "%A, %d %B %Y %H:%M:%S", &timeinfo);
     return String(buffer);
 }
+
+int32_t getDateTimeEpoch()
+{
+    struct tm timeinfo;
+    if (!getLocalTime(&timeinfo))
+    {
+        Serial.println("Failed to obtain time");
+        return 0;
+    }
+
+    return mktime(&timeinfo);
+}
