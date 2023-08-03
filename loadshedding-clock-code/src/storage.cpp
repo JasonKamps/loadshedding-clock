@@ -37,14 +37,14 @@ void writeString(char const *key, String value)
     Serial.println("Wrote " + String(key) + ": " + value);
 }
 
-int32_t readLong(char const *key)
+time_t readTime(char const *key)
 {
-    int32_t value = preferences.getLong(key, 0);
+    time_t value = preferences.getLong(key, 0);
     Serial.println("Read " + String(key) + ": " + value);
     return value;
 }
 
-void writeLong(char const *key, int32_t value)
+void writeTime(char const *key, time_t value)
 {
     preferences.putLong(key, value);
     Serial.println("Write " + String(key) + ": " + value);

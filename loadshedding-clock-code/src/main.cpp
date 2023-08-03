@@ -4,9 +4,14 @@
 #include "storage.h"
 #include "dateTime.h"
 #include "api.h"
+#include "schedule.h"
 
 const int RESET_PIN = 36;
 const int API_CALL_INTERVAL = 30; // minutes
+
+Schedule schedule;
+
+time_t lastEventRetrievalTime = 0;
 
 void setup()
 {
@@ -63,17 +68,22 @@ void setup()
   }
 
   // retrieve events if sufficient time has passed since last retrieval
-  int32_t lastRetrievalEpoch = readLong("lastRetrieval");
-  if (getDateTimeEpoch() - lastRetrievalEpoch > (API_CALL_INTERVAL * 60))
+  lastEventRetrievalTime = readTime("lastRetrieval");
+  if (getUnixTime() - lastEventRetrievalTime > (API_CALL_INTERVAL * 60))
   {
     Serial.println("Retrieving events. It has been more than " + String(API_CALL_INTERVAL) + " minutes since last retrieval.");
     retrieveEvents();
-    writeLong("lastRetrieval", getDateTimeEpoch());
+    time_t now = getUnixTime();
+    writeTime("lastRetrieval", now);
+    lastEventRetrievalTime = now;
   }
   else
   {
-    Serial.println("Not retrieving events. It has only been " + String((getDateTimeEpoch() - lastRetrievalEpoch) / 60.0) + " minutes since last retrieval.");
+    Serial.println("Not retrieving events. It has only been " + String((getUnixTime() - lastEventRetrievalTime) / 60.0) + " minutes since last retrieval.");
   }
+
+  // schedule
+  schedule.update();
 
   // read and print events
   DynamicJsonDocument doc = readEvents();
@@ -88,16 +98,45 @@ void setup()
   clearDisplay();
 }
 
-String dots = "";
-
 void loop()
 {
-  // display an increasing number of dots
-  dots += ".";
-  displayText(dots, 0, 1, true, false);
+  // display countdown to next transition
+  int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
+  if (secondsUntilNextTransition > 0)
+  {
+    int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
+    int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
+    if (schedule.isCurrentlyLoadshedding())
+    {
+      displayText("Loadshedding", 0, 1, true, false);
+      displayText("ends in", 10, false);
+    }
+    else
+    {
+      displayText("Loadshedding", 0, 1, true, false);
+      displayText("starts in", 10, false);
+    }
+    displayText(String(hoursUntilNextEvent) + "h " + String(minutesUntilNextEvent) + "m", 20, false);
+  }
+  else
+  {
+    displayText("No loadshedding expected today!", 0, 1, true, false);
+  }
 
-  // display date and time
-  displayText(getDateTimeString(), 30, 1, true, false);
+  // display the highest current/upcoming loadshedding stage
+  int highestStage = schedule.getHighestUpcomingStage();
+  displayText("Stage: " + String(highestStage), 40, false);
 
-  delay(500);
+  // retrieve events from API if sufficient time has passed since last retrieval
+  if (getUnixTime() - lastEventRetrievalTime > (API_CALL_INTERVAL * 60))
+  {
+    Serial.println("Retrieving events. It has been more than " + String(API_CALL_INTERVAL) + " minutes since last retrieval.");
+    retrieveEvents();
+    time_t now = getUnixTime();
+    writeTime("lastRetrieval", now);
+    lastEventRetrievalTime = now;
+    schedule.update();
+  }
+
+  delay(5000);
 }

@@ -6,7 +6,8 @@
 #include "oled.h"
 
 void setupDateTime();
-String getDateTimeString();
-int32_t getDateTimeEpoch();
+String getCurrentDateTimeString();
+time_t getUnixTime();
+time_t convertStringToUnixTime(String dateTimeString);
 
 #endif
