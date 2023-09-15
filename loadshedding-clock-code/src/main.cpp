@@ -5,6 +5,7 @@
 #include "dateTime.h"
 #include "api.h"
 #include "schedule.h"
+#include "ssd.h"
 
 const int RESET_PIN = 36;
 const int API_CALL_INTERVAL = 30; // minutes
@@ -27,6 +28,9 @@ void setup()
 
   // OLED
   setupOLED();
+
+  // seven-segment display
+  setupSSD();
 
   // storage
   setupStorage();
@@ -98,6 +102,9 @@ void setup()
   clearDisplay();
 }
 
+int ssdCount = 0;
+int ssdDigit = 0;
+
 void loop()
 {
   // display countdown to next transition
@@ -138,5 +145,8 @@ void loop()
     schedule.update();
   }
 
-  delay(5000);
+  // update seven-segment display
+  displayNumber(ssdCount++ % 10, ssdDigit++ % 4);
+
+  delay(1000);
 }
