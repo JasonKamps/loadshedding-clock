@@ -13,6 +13,8 @@ const int DIGIT_1 = 19;
 const int DIGIT_2 = 3;
 const int DIGIT_3 = 1; // rightmost digit
 
+int currentDigit = 0;
+
 void setupSSD()
 {
     // set pin modes
@@ -55,6 +57,16 @@ void setupSSD()
  */
 void displayNumber(int number, int digit)
 {
+    if (number < 0 || number > 9)
+    {
+        // invalid number
+        digitalWrite(DIGIT_0, LOW);
+        digitalWrite(DIGIT_1, LOW);
+        digitalWrite(DIGIT_2, LOW);
+        digitalWrite(DIGIT_3, LOW);
+        return;
+    }
+
     // convert number to binary coded decimal
     boolean bcd[4];
     for (int i = 0; i < 4; i++)
@@ -75,4 +87,52 @@ void displayNumber(int number, int digit)
     digitalWrite(BCD_B, bcd[1]);
     digitalWrite(BCD_C, bcd[2]);
     digitalWrite(BCD_D, bcd[3]);
+}
+
+//**
+// * Display countdown on the seven segment display.
+// *
+// * Only a single digit is displayed at a time. This function should be called repeatedly to display all digits.
+// * Digits are automatically cycled. 250 Hz is the recommended calling frequency.
+// *
+// * @param secondsUntilNextTransition The number of seconds until the next transition.
+// */
+void displayCountdown(int secondsUntilNextTransition)
+{
+    if (secondsUntilNextTransition > 0)
+    {
+        // convert seconds to hour value and minute value
+        int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
+        int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
+
+        // extract digits
+        int firstDigitOfHourValue = hoursUntilNextEvent / 10;
+        int secondDigitOfHourValue = hoursUntilNextEvent % 10;
+        int firstDigitOfMinuteValue = minutesUntilNextEvent / 10;
+        int secondDigitOfMinuteValue = minutesUntilNextEvent % 10;
+
+        // remove leading zeros
+        if (firstDigitOfHourValue == 0)
+        {
+            firstDigitOfHourValue = -1;
+        }
+        if (firstDigitOfMinuteValue == 0)
+        {
+            firstDigitOfMinuteValue = -1;
+        }
+
+        // display digits
+        int digitValues[4] = {firstDigitOfHourValue, secondDigitOfHourValue, firstDigitOfMinuteValue, secondDigitOfMinuteValue};
+
+        displayNumber(digitValues[currentDigit], currentDigit);
+        currentDigit = (currentDigit + 1) % 4;
+    }
+    else
+    {
+        // no loadshedding expected today
+        digitalWrite(DIGIT_0, LOW);
+        digitalWrite(DIGIT_1, LOW);
+        digitalWrite(DIGIT_2, LOW);
+        digitalWrite(DIGIT_3, LOW);
+    }
 }

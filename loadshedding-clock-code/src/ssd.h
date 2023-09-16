@@ -5,5 +5,6 @@
 
 void setupSSD();
 void displayNumber(int number, int digit = 0);
+void displayCountdown(int secondsUntilNextTransition);
 
 #endif
