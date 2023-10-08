@@ -93,6 +93,7 @@ void setupOLED()
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setTextWrap(false);
+    display.setRotation(2);
 
     // splash screen
     display.drawBitmap(0, 0, eishkom, 128, 64, WHITE);

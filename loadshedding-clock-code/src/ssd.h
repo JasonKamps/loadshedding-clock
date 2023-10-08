@@ -3,8 +3,10 @@
 
 #include "Arduino.h"
 
-void setupSSD();
-void displayNumber(int number, int digit = 0);
-void displayCountdown(int secondsUntilNextTransition);
+void clearSSDs();
+void testSSDs();
+void displayOnSSD(int digit, int value);
+void updateSSDs(int secondsUntilNextTransition, int stage);
+void refreshSSDs();
 
 #endif

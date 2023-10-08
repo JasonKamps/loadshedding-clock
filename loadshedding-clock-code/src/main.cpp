@@ -16,12 +16,10 @@ time_t lastEventRetrievalTime = 0;
 
 hw_timer_t *ssdTimer = NULL;
 
-int secondsUntilNextTransition = 0;
-
-// ISR to display countdown on seven-segment display
-void IRAM_ATTR onTimer()
+// ISR to refresh seven-segment displays
+void IRAM_ATTR ssdISR()
 {
-  displayCountdown(secondsUntilNextTransition);
+  refreshSSDs();
 }
 
 void setup()
@@ -39,14 +37,14 @@ void setup()
   // OLED
   setupOLED();
 
-  // seven-segment display
-  setupSSD();
-
-  // seven-segment display timer
+  // seven-segment display refresh timer
   ssdTimer = timerBegin(0, 80, true); // 80 prescaler gives 1 MHz
-  timerAttachInterrupt(ssdTimer, &onTimer, true); 
-  timerAlarmWrite(ssdTimer, 4000, true); // 4000 microseconds gives 250 Hz
+  timerAttachInterrupt(ssdTimer, &ssdISR, true);
+  timerAlarmWrite(ssdTimer, 2000, true); // 2000 microseconds gives 500 Hz
   timerAlarmEnable(ssdTimer);
+
+  // test seven-segment displays
+  testSSDs();
 
   // storage
   setupStorage();
@@ -121,7 +119,7 @@ void setup()
 void loop()
 {
   // display countdown to next transition
-  secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
+  int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
   if (secondsUntilNextTransition > 0)
   {
     int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
@@ -157,6 +155,8 @@ void loop()
     lastEventRetrievalTime = now;
     schedule.update();
   }
+
+  updateSSDs(secondsUntilNextTransition, highestStage);
 
   delay(1000);
 }
