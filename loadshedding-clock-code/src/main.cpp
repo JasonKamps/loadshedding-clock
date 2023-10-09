@@ -118,44 +118,19 @@ void setup()
 
 void loop()
 {
-  // display countdown to next transition
-  int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
-  if (secondsUntilNextTransition > 0)
+  // display "ends" on OLED if currently loadshedding, "begins" if not yet loadshedding
+  if (schedule.isCurrentlyLoadshedding())
   {
-    int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
-    int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
-    if (schedule.isCurrentlyLoadshedding())
-    {
-      displayText("Loadshedding", 0, 1, true, false);
-      displayText("ends in", 10, false);
-    }
-    else
-    {
-      displayText("Loadshedding", 0, 1, true, false);
-      displayText("starts in", 10, false);
-    }
-    displayText(String(hoursUntilNextEvent) + "h " + String(minutesUntilNextEvent) + "m", 20, false);
+    displayText("ends", 15, 3);
   }
   else
   {
-    displayText("No loadshedding expected today!", 0, 1, true, false);
+    displayText("begins", 15, 3);
   }
 
-  // display the highest current/upcoming loadshedding stage
+  // update values to display on seven-segment displays
+  int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
   int highestStage = schedule.getHighestUpcomingStage();
-  displayText("Stage: " + String(highestStage), 40, false);
-
-  // retrieve events from API if sufficient time has passed since last retrieval
-  if (getUnixTime() - lastEventRetrievalTime > (API_CALL_INTERVAL * 60))
-  {
-    Serial.println("Retrieving events. It has been more than " + String(API_CALL_INTERVAL) + " minutes since last retrieval.");
-    retrieveEvents();
-    time_t now = getUnixTime();
-    writeTime("lastRetrieval", now);
-    lastEventRetrievalTime = now;
-    schedule.update();
-  }
-
   updateSSDs(secondsUntilNextTransition, highestStage);
 
   delay(1000);

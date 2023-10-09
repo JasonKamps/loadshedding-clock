@@ -1,6 +1,6 @@
 #include "ssd.h"
 
-// common cathode seven segment display pins
+// common cathode seven-segment display pins
 const int PIN_A = 4;
 const int PIN_B = 13;
 const int PIN_C = 14;
@@ -22,7 +22,7 @@ const int SSD_PINS[] = {PIN_G, PIN_F, PIN_E, PIN_D, PIN_C, PIN_B, PIN_A};
 const int NUM_DIGITS = 5;
 const int SSD_DIGITS[] = {DIGIT_0_CATHODE, DIGIT_1_CATHODE, DIGIT_2_CATHODE, DIGIT_3_CATHODE, STAGE_DIGIT_CATHODE};
 
-// current digit values
+// values to display on each digit
 int currentDigitValues[] = {0, 0, 0, 0, 0}; // 0 is the leftmost digit. 3 is the rightmost digit. 4 is the stage digit.
 
 // digitCodeMap to indicate which segments must be illuminated to display each number
