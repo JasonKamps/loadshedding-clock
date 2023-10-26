@@ -6,6 +6,7 @@
 #include "api.h"
 #include "schedule.h"
 #include "ssd.h"
+#include "timeline.h"
 
 const int RESET_PIN = 36;
 const int API_CALL_INTERVAL = 30; // minutes
@@ -37,7 +38,11 @@ void setup()
   // OLED
   setupOLED();
 
-  // seven-segment display refresh timer
+  // timeline
+  setupTimeline();
+  sweepTimelineLEDs();
+
+  // seven-segment display refresh timer (500 Hz)
   ssdTimer = timerBegin(0, 80, true); // 80 prescaler gives 1 MHz
   timerAttachInterrupt(ssdTimer, &ssdISR, true);
   timerAlarmWrite(ssdTimer, 2000, true); // 2000 microseconds gives 500 Hz
@@ -132,6 +137,9 @@ void loop()
   int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
   int highestStage = schedule.getHighestUpcomingStage();
   updateSSDs(secondsUntilNextTransition, highestStage);
+
+  // update timeline
+  updateTimeline(schedule);
 
   delay(1000);
 }

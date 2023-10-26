@@ -1,4 +1,4 @@
-#ifndef SCHEUDLE_H
+#ifndef SCHEDULE_H
 #define SCHEDULE_H
 
 #include "Arduino.h"
@@ -16,9 +16,8 @@
  */
 class Schedule
 {
-private:
-    Event *events;
 public:
+    Event *events;
     int numberOfEvents;
     Schedule();
     void update();

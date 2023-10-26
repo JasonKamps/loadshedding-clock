@@ -8,11 +8,11 @@ const int PIN_D = 0;
 const int PIN_E = 26;
 const int PIN_F = 25;
 const int PIN_G = 12;
-const int DIGIT_0_CATHODE = 23; // leftmost coundown digit
-const int DIGIT_1_CATHODE = 19;
+const int DIGIT_0_CATHODE = 1; // leftmost coundown digit
+const int DIGIT_1_CATHODE = 3;
 const int DIGIT_2_CATHODE = 16;
 const int DIGIT_3_CATHODE = 17; // rightmost countdown digit
-const int STAGE_DIGIT_CATHODE = 18;
+const int STAGE_DIGIT_CATHODE = 15;
 
 // segement pins in GFEDCBA order
 const int NUM_SEGMENTS = 7;
