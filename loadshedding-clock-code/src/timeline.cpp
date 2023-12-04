@@ -76,8 +76,8 @@ void updateTimelineWithEvent(Event event)
 void setLED(int index)
 {
     // convert index to row and column of 8x8 matrix before using setPoint()
-    int row = index / 8;
-    int col = index % 8;
+    int row = index % 8;
+    int col = index / 8;
 
     timelineLEDs.setPoint(row, col, true);
 }
