@@ -7,15 +7,31 @@
 #include "schedule.h"
 #include "ssd.h"
 #include "timeline.h"
+#include "Led.h"
 
 const int RESET_PIN = 36;
 const int API_CALL_INTERVAL = 30; // minutes
+
+// Input voltage measurement
+const int  VIN_MEASURE_PIN = 35;
+const int BATTERY_VOLTAGE_THRESHOLD = 4; // volts
+
+Adafruit_MCP23X17 mcp;
+
+LED wifiLED(2, 1, 0);
+LED pwrLED(5, 4, 3);
+LED signLEDs(8, 9, 10);
 
 Schedule schedule;
 
 time_t lastEventRetrievalTime = 0;
 
 hw_timer_t *ssdTimer = NULL;
+
+float getInputVoltage()
+{
+  return analogRead(VIN_MEASURE_PIN) / 4095.0 * 3.3 * 2; // 2x voltage divider
+}
 
 // ISR to refresh seven-segment displays
 void IRAM_ATTR ssdISR()
@@ -37,6 +53,34 @@ void setup()
 
   // OLED
   setupOLED();
+
+  // VIN measurement
+  pinMode(VIN_MEASURE_PIN, INPUT);
+  Serial.println("VIN voltage: " + String(getInputVoltage()) + " V");
+
+  // status LEDs
+  wifiLED.setup();
+  pwrLED.setup();
+  signLEDs.setup();
+
+  // test LEDs
+  wifiLED.turnBlue();
+  pwrLED.turnBlue();
+  signLEDs.turnBlue();
+  delay(500);
+  wifiLED.turnGreen();
+  pwrLED.turnGreen();
+  signLEDs.turnBlue();
+  delay(500);
+  wifiLED.turnRed();
+  pwrLED.turnRed();
+  signLEDs.turnRed();
+  delay(500);
+  pwrLED.turnOff();
+  signLEDs.turnOff();
+
+  // display power source
+  getInputVoltage() > BATTERY_VOLTAGE_THRESHOLD ? pwrLED.turnGreen() : pwrLED.turnRed();
 
   // timeline
   setupTimeline();
@@ -74,6 +118,7 @@ void setup()
 
   // WiFi
   boolean customParamsSaved = setupWiFi();
+  isWiFiConnected ? wifiLED.turnGreen() : wifiLED.turnRed();
 
   // display user info from storage
   displayText("API: " + readString("apiToken"), 0, 1, true);
@@ -107,6 +152,7 @@ void setup()
 
   // schedule
   schedule.update();
+  schedule.isCurrentlyLoadshedding() ? signLEDs.turnRed() : signLEDs.turnGreen();
 
   // read and print events
   DynamicJsonDocument doc = readEvents();
@@ -118,20 +164,18 @@ void setup()
   displayText("Area ID: " + readString("areaId"), 30, 1, true, false);
   delay(2000);
 
+  // display VIN voltage
+  clearDisplay();
+  displayText("VIN: " + String(getInputVoltage()) + " V", 0, 1, true, false);
+  delay(1000);
+
   clearDisplay();
 }
 
 void loop()
 {
   // display "ends" on OLED if currently loadshedding, "begins" if not yet loadshedding
-  if (schedule.isCurrentlyLoadshedding())
-  {
-    displayText("ends", 15, 3);
-  }
-  else
-  {
-    displayText("begins", 15, 3);
-  }
+  schedule.isCurrentlyLoadshedding() ? displayText("ends", 15, 3) : displayText("begins", 15, 3);
 
   // update values to display on seven-segment displays
   int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
@@ -140,6 +184,12 @@ void loop()
 
   // update timeline
   updateTimeline(schedule);
+  flashCurrentTimelineLED();
+
+  // update LEDs
+  schedule.isCurrentlyLoadshedding() ? signLEDs.turnRed() : signLEDs.turnGreen();
+  isWiFiConnected ? wifiLED.turnGreen() : wifiLED.turnRed();
+  getInputVoltage() > BATTERY_VOLTAGE_THRESHOLD ? pwrLED.turnGreen() : pwrLED.turnRed();
 
   delay(1000);
 }

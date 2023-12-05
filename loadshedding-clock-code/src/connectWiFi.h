@@ -8,5 +8,6 @@
 
 boolean setupWiFi();
 void resetWiFi();
+boolean isWiFiConnected();
 
 #endif

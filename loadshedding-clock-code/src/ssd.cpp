@@ -39,7 +39,7 @@ static const uint8_t digitCodeMap[] = {
     0b00000111, // 7   "7"
     0b01111111, // 8   "8"
     0b01101111, // 9   "9"
-    0b00000000, // 32  ' '  BLANK
+    0b00000000, // 10  ' '  BLANK
 };
 
 /**
@@ -123,6 +123,7 @@ void updateSSDs(int secondsUntilNextTransition, int stage)
     // convert seconds to hour value and minute value
     int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
     int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
+    minutesUntilNextEvent += 1; // add 1 minute to account for rounding down
 
     // extract digits
     int firstDigitOfHourValue = hoursUntilNextEvent / 10;
@@ -133,11 +134,11 @@ void updateSSDs(int secondsUntilNextTransition, int stage)
     // remove leading zeros
     if (firstDigitOfHourValue == 0)
     {
-        firstDigitOfHourValue = -1;
+        firstDigitOfHourValue = 10;
     }
     if (firstDigitOfMinuteValue == 0)
     {
-        firstDigitOfMinuteValue = -1;
+        firstDigitOfMinuteValue = 10;
     }
 
     // update current digit values

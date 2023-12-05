@@ -82,3 +82,8 @@ void resetWiFi()
     Serial.println("Resetting WiFi...");
     wifiManager.resetSettings();
 }
+
+boolean isWiFiConnected()
+{
+    return (wifiManager.getWLStatusString() == "WL_CONNECTED");
+}

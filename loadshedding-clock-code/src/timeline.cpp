@@ -12,6 +12,8 @@ const int SECONDS_IN_DAY = 86400;
 const int GMT_OFFSET = 7200; // 2 hours
 const int LED_COUNT = 48;
 
+bool currentLEDFlashState = false;
+
 void setupTimeline()
 {
     Serial.println("Setting up timeline...");
@@ -83,6 +85,34 @@ void setLED(int index)
 }
 
 /**
+ * Turns off the LED at the given index.
+ *
+ * @param index The index of the LED (0-47).
+ */
+void clearLED(int index)
+{
+    // convert index to row and column of 8x8 matrix before using setPoint()
+    int row = index % 8;
+    int col = index / 8;
+
+    timelineLEDs.setPoint(row, col, false);
+}
+
+/**
+ * Returns the status of the LED at the given index.
+ * 
+ * @param index The index of the LED (0-47).
+*/
+bool getLEDStatus(int index)
+{
+    // convert index to row and column of 8x8 matrix before using getPoint()
+    int row = index % 8;
+    int col = index / 8;
+
+    return timelineLEDs.getPoint(row, col);
+}
+
+/**
  * Turns off entire LED array.
  */
 void clearTimelineLEDs()
@@ -103,4 +133,15 @@ void sweepTimelineLEDs()
     }
 
     clearTimelineLEDs();
+}
+
+/**
+ * Flashes the LED corresponding to the current time.
+ * This function should be called every second.
+ */
+void flashCurrentTimelineLED()
+{
+    int currentLED = round((getUnixTime() + GMT_OFFSET) % SECONDS_IN_DAY / (SECONDS_IN_DAY / LED_COUNT));
+    currentLEDFlashState ? clearLED(currentLED) : setLED(currentLED);
+    currentLEDFlashState = !currentLEDFlashState;
 }
