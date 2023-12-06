@@ -14,7 +14,7 @@ const int API_CALL_INTERVAL = 30; // minutes
 
 // Input voltage measurement
 const int  VIN_MEASURE_PIN = 35;
-const int BATTERY_VOLTAGE_THRESHOLD = 4; // volts
+const float BATTERY_VOLTAGE_THRESHOLD = 3.9; // volts
 
 Adafruit_MCP23X17 mcp;
 
@@ -67,15 +67,15 @@ void setup()
   wifiLED.turnBlue();
   pwrLED.turnBlue();
   signLEDs.turnBlue();
-  delay(500);
+  delay(200);
   wifiLED.turnGreen();
   pwrLED.turnGreen();
   signLEDs.turnBlue();
-  delay(500);
+  delay(200);
   wifiLED.turnRed();
   pwrLED.turnRed();
   signLEDs.turnRed();
-  delay(500);
+  delay(200);
   pwrLED.turnOff();
   signLEDs.turnOff();
 
@@ -118,7 +118,7 @@ void setup()
 
   // WiFi
   boolean customParamsSaved = setupWiFi();
-  isWiFiConnected ? wifiLED.turnGreen() : wifiLED.turnRed();
+  isWiFiConnected() ? wifiLED.turnGreen() : wifiLED.turnRed();
 
   // display user info from storage
   displayText("API: " + readString("apiToken"), 0, 1, true);
@@ -188,7 +188,7 @@ void loop()
 
   // update LEDs
   schedule.isCurrentlyLoadshedding() ? signLEDs.turnRed() : signLEDs.turnGreen();
-  isWiFiConnected ? wifiLED.turnGreen() : wifiLED.turnRed();
+  isWiFiConnected() ? wifiLED.turnGreen() : wifiLED.turnRed();
   getInputVoltage() > BATTERY_VOLTAGE_THRESHOLD ? pwrLED.turnGreen() : pwrLED.turnRed();
 
   delay(1000);
