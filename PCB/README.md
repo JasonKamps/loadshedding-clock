@@ -2,7 +2,7 @@
 
 This directory contains the KiCad project files for the PCB.
 
-Gerber files are available in [outputs](./outputs).
+Gerber files are available in [/outputs](./outputs).
 
 I used [JLCPCB](https://jlcpcb.com/) to manufacture the PCB.
 

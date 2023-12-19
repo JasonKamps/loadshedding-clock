@@ -11,3 +11,9 @@ The loadshedding indicator adapter is a 3D-printed part that allows the loadshed
 The feet are 3D-printed parts that allow the clock to stand upright.
 
 ![3D printed parts](../images/3D_printed_parts.png "3D printed parts")
+
+## Loadshedding indicator sign
+
+[/sign](./sign) contains image files for the loadshedding indicator sign. These files can be used to laser cut the sign from acrylic.
+
+![Loadshedding indicator sign](./sign/NOT LOADSHEDDING instructions.png "Loadshedding indicator sign")

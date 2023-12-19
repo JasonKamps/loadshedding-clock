@@ -6,7 +6,7 @@ A timer that counts down to the next scheduled blackout.
 
 The clock is based on an ESP32, and it obtains loadshedding information from the [EskomSePush API](https://eskomsepush.gumroad.com/l/api).
 
-All code is written in C++ using the [Arduino framework](https://www.arduino.cc/reference/en/) and [PlatformIO](https://platformio.org/). The code is available in [/loadshedding-clock-code](./loadshedding-clock-code).
+All code is written in C++ using the [Arduino framework](https://www.arduino.cc/reference/en/) and [PlatformIO](https://platformio.org/). The code is available in [/loadshedding-clock-code/src](./loadshedding-clock-code/src).
 
 The PCB schematics and board layouts can be found in [/PCB](./PCB).
 
