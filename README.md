@@ -2,9 +2,15 @@
 
 A timer that counts down to the next scheduled blackout.
 
-![Breadboard prototype](./images/breadboard.jpg "Breadboard prototype")
+![CAD render](./images/front_render_annotated.png  "CAD render")
 
 The clock is based on an ESP32, and it obtains loadshedding information from the [EskomSePush API](https://eskomsepush.gumroad.com/l/api).
+
+All code is written in C++ using the [Arduino framework](https://www.arduino.cc/reference/en/) and [PlatformIO](https://platformio.org/). The code is available in [/loadshedding-clock-code](./loadshedding-clock-code).
+
+The PCB schematics and board layouts can be found in [/PCB](./PCB).
+
+CAD files for the 3D-printable parts can be found in [/3D](./3D).
 
 ## Why did I make this?
 
@@ -22,15 +28,17 @@ The clock then displays the loadshedding information for the given suburb, autom
 
 ## What's next?
 
-The end goal is to have a sleek-looking PCB with a large LED-lit engraved acrylic panel above the clock to indicate the current loadshedding status.
-
-![Visual design](./images/visual_design.jpg "Visual design")
+A PCB has been designed and ordered. Once it arrives, the clock will be assembled and tested.
+Future versions may include the following:
 
 - [x] ~~Get the clock working~~
-- [ ] LED timeline
-- [ ] LED-lit acrylic panel
-- [ ] Design PCB
+- [x] ~~LED timeline~~
+- [x] ~~LED-lit acrylic panel~~
+- [x] ~~Design PCB~~
+- [ ] Simplified 7-segment display circuitry
 - [ ] Notification buzzer
+- [ ] Capacitive touch input
+
 
 ## Bill of Materials
 Work in progress.
@@ -43,6 +51,13 @@ Work in progress.
 | [7 Segment Display 1.8" Common Cathode](https://www.robotics.org.za/7SEG-018-GRE) | 4 |
 | [7 Segment Display 0.56" Common Cathode](https://www.robotics.org.za/7SEG-056-RED) | 1 |
 | [BC557 PNP Transistor](https://www.robotics.org.za/BC557)                | 7 |
+| [Green 5mm LED](https://www.robotics.org.za/LED-05-GRN-17)                | 9 |
+| [Red 5mm LED](https://www.robotics.org.za/LED-RED-5MM)                | 6 |
+| [Push button](https://www.robotics.org.za/TAC-66-H)                | 1 |
+| [RGB LED](https://www.robotics.org.za/RGB-8MM-CC)                | 2 |
+
+## Breadboard Prototype
+![Breadboard prototype](./images/breadboard.jpg "Breadboard prototype")
 
 
 
