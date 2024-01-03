@@ -2,6 +2,9 @@
 
 A timer that counts down to the next scheduled blackout.
 
+![Front view not loadshedding](./images/not_loadshedding.jpeg "Front view not loadshedding")
+![Front view loadshedding](./images/loadshedding.jpeg "Front view loadshedding")
+![Back view](./images/back.jpeg "Back view")
 ![CAD render](./images/front_render_annotated.png  "CAD render")
 
 The clock is based on an ESP32, and it obtains loadshedding information from the [EskomSePush API](https://eskomsepush.gumroad.com/l/api).
@@ -51,10 +54,18 @@ Work in progress.
 | [7 Segment Display 1.8" Common Cathode](https://www.robotics.org.za/7SEG-018-GRE) | 4 |
 | [7 Segment Display 0.56" Common Cathode](https://www.robotics.org.za/7SEG-056-RED) | 1 |
 | [BC557 PNP Transistor](https://www.robotics.org.za/BC557)                | 7 |
+| [Bar graph LED](https://www.robotics.org.za/BAR8-RED)                | 6 |
 | [Green 5mm LED](https://www.robotics.org.za/LED-05-GRN-17)                | 9 |
 | [Red 5mm LED](https://www.robotics.org.za/LED-RED-5MM)                | 6 |
 | [Push button](https://www.robotics.org.za/TAC-66-H)                | 1 |
 | [RGB LED](https://www.robotics.org.za/RGB-8MM-CC)                | 2 |
+| [Adjustable DC power supply](https://www.robotics.org.za/CJ-615)                | 1 |
+| [DC jack to USB C converter](https://www.robotics.org.za/JACK-USBC)                | 1 |
+| [100kΩ resistor](https://www.robotics.org.za/RES-100K-50)                | 2 |
+| [10kΩ resistor](https://www.robotics.org.za/RES-10K-025)                | 8 |
+| [1kΩ resistor](https://www.robotics.org.za/RES-1K-50)                | 18 |
+| [220Ω resistor](https://www.robotics.org.za/RES-220E-50)                | 5 |
+| [100Ω resistor](https://www.robotics.org.za/RES-100E-50)                | 7 |
 
 ## Breadboard Prototype
 ![Breadboard prototype](./images/breadboard.jpg "Breadboard prototype")
