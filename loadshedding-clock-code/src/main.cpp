@@ -13,16 +13,17 @@ const int RESET_PIN = 36;
 const int API_CALL_INTERVAL = 30; // minutes
 
 // Input voltage measurement
-const int  VIN_MEASURE_PIN = 35;
-const float BATTERY_VOLTAGE_THRESHOLD = 3.9; // volts
+const int VIN_MEASURE_PIN = 35;
+const float BATTERY_VOLTAGE_THRESHOLD = 3.5; // volts
 
 Adafruit_MCP23X17 mcp;
 
 LED wifiLED(2, 1, 0);
 LED pwrLED(5, 4, 3);
-LED signLEDs(8, 9, 10);
+LED signLEDs(8, 10, 14);
 
 Schedule schedule;
+
 
 time_t lastEventRetrievalTime = 0;
 
@@ -66,11 +67,10 @@ void setup()
   // test LEDs
   wifiLED.turnBlue();
   pwrLED.turnBlue();
-  signLEDs.turnBlue();
   delay(200);
   wifiLED.turnGreen();
   pwrLED.turnGreen();
-  signLEDs.turnBlue();
+  signLEDs.turnGreen();
   delay(200);
   wifiLED.turnRed();
   pwrLED.turnRed();
@@ -174,13 +174,22 @@ void setup()
 
 void loop()
 {
-  // display "ends" on OLED if currently loadshedding, "begins" if not yet loadshedding
-  schedule.isCurrentlyLoadshedding() ? displayText("ends", 15, 3) : displayText("begins", 15, 3);
-
   // update values to display on seven-segment displays
   int secondsUntilNextTransition = schedule.getSecondsUntilNextTransition();
+  // Serial.println(secondsUntilNextTransition);
   int highestStage = schedule.getHighestUpcomingStage();
   updateSSDs(secondsUntilNextTransition, highestStage);
+
+  if (secondsUntilNextTransition >= 0)
+  {
+    // display "ends" on OLED if currently loadshedding, "begins" if not yet loadshedding
+    schedule.isCurrentlyLoadshedding() ? displayEnds() : displayBegins();
+  }
+  else
+  {
+    // no upciming events, display "suspended" on OLED
+    displayText("suspended", 20, 2);
+  }
 
   // update timeline
   updateTimeline(schedule);

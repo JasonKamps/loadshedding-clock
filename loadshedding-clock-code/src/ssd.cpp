@@ -120,33 +120,46 @@ void displayOnSSD(int digit, int value)
  */
 void updateSSDs(int secondsUntilNextTransition, int stage)
 {
-    // convert seconds to hour value and minute value
-    int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
-    int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
-    minutesUntilNextEvent += 1; // add 1 minute to account for rounding down
-
-    // extract digits
-    int firstDigitOfHourValue = hoursUntilNextEvent / 10;
-    int secondDigitOfHourValue = hoursUntilNextEvent % 10;
-    int firstDigitOfMinuteValue = minutesUntilNextEvent / 10;
-    int secondDigitOfMinuteValue = minutesUntilNextEvent % 10;
-
-    // remove leading zeros
-    if (firstDigitOfHourValue == 0)
+    if (secondsUntilNextTransition >= 0)
     {
-        firstDigitOfHourValue = 10;
-    }
-    if (firstDigitOfMinuteValue == 0)
-    {
-        firstDigitOfMinuteValue = 10;
-    }
+        // convert seconds to hour value and minute value
+        int hoursUntilNextEvent = secondsUntilNextTransition / 3600;
+        int minutesUntilNextEvent = (secondsUntilNextTransition % 3600) / 60;
+        minutesUntilNextEvent += 1; // add 1 minute to account for rounding down
 
-    // update current digit values
-    currentDigitValues[0] = firstDigitOfHourValue;
-    currentDigitValues[1] = secondDigitOfHourValue;
-    currentDigitValues[2] = firstDigitOfMinuteValue;
-    currentDigitValues[3] = secondDigitOfMinuteValue;
-    currentDigitValues[4] = stage;
+        // extract digits
+        int firstDigitOfHourValue = hoursUntilNextEvent / 10;
+        int secondDigitOfHourValue = hoursUntilNextEvent % 10;
+        int firstDigitOfMinuteValue = minutesUntilNextEvent / 10;
+        int secondDigitOfMinuteValue = minutesUntilNextEvent % 10;
+
+        // remove leading zeros
+        if (firstDigitOfHourValue == 0)
+        {
+            firstDigitOfHourValue = 10;
+        }
+        if (firstDigitOfMinuteValue == 0)
+        {
+            firstDigitOfMinuteValue = 10;
+        }
+
+        // update current digit values
+        currentDigitValues[0] = firstDigitOfHourValue;
+        currentDigitValues[1] = secondDigitOfHourValue;
+        currentDigitValues[2] = firstDigitOfMinuteValue;
+        currentDigitValues[3] = secondDigitOfMinuteValue;
+        currentDigitValues[4] = stage;
+    }
+    else
+    {
+        // no upcoming loadshedding
+        // make SSDs blank
+        currentDigitValues[0] = 10;
+        currentDigitValues[1] = 10;
+        currentDigitValues[2] = 10;
+        currentDigitValues[3] = 10;
+        currentDigitValues[4] = stage;
+    }
 }
 
 int currentDigit = 0;
