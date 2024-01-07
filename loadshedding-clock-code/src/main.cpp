@@ -24,7 +24,6 @@ LED signLEDs(8, 10, 14);
 
 Schedule schedule;
 
-
 time_t lastEventRetrievalTime = 0;
 
 hw_timer_t *ssdTimer = NULL;

@@ -7,7 +7,7 @@ A timer that counts down to the next scheduled blackout.
 ![Back view](./images/back.jpeg "Back view")
 ![CAD render](./images/front_render_annotated.png  "CAD render")
 
-The clock is based on an ESP32, and it obtains loadshedding information from the [EskomSePush API](https://eskomsepush.gumroad.com/l/api).
+The clock is based on an ESP32 microcontroller, and it obtains loadshedding information from the [EskomSePush API](https://eskomsepush.gumroad.com/l/api).
 
 All code is written in C++ using the [Arduino framework](https://www.arduino.cc/reference/en/) and [PlatformIO](https://platformio.org/). The code is available in [/loadshedding-clock-code/src](./loadshedding-clock-code/src).
 
@@ -31,7 +31,6 @@ The clock then displays the loadshedding information for the given suburb, autom
 
 ## What's next?
 
-A PCB has been designed and ordered. Once it arrives, the clock will be assembled and tested.
 Future versions may include the following:
 
 - [x] ~~Get the clock working~~
@@ -44,7 +43,6 @@ Future versions may include the following:
 
 
 ## Bill of Materials
-Work in progress.
 
 | Part                                                                      | Quantity |
 |---------------------------------------------------------------------------| -- |
@@ -66,6 +64,9 @@ Work in progress.
 | [1kΩ resistor](https://www.robotics.org.za/RES-1K-50)                | 18 |
 | [220Ω resistor](https://www.robotics.org.za/RES-220E-50)                | 5 |
 | [100Ω resistor](https://www.robotics.org.za/RES-100E-50)                | 7 |
+
+## Video overview
+[![I made a loadshedding clock](./images/thumbnail.jpg)](https://youtu.be/v7MFmr7yhXo "I made a loadshedding clock")
 
 ## Breadboard Prototype
 ![Breadboard prototype](./images/breadboard.jpg "Breadboard prototype")
