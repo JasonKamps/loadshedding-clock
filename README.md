@@ -49,6 +49,8 @@ Future versions may include the following:
 | [FireBeetle 2 ESP32 Microcontroller](https://www.robotics.org.za/DFR0654) | 1 |
 | [3.7V LiPo Battery](https://www.robotics.org.za/DTP605068)                | 1 |
 | [I2C OLED Display](https://www.robotics.org.za/OLED096W)                  | 1 |
+| [MCP23017 IO Expander](https://www.robotics.org.za/MCP23017)              | 1 |
+| [MAX7219 Display Driver](https://www.robotics.org.za/MAX7219-DIP)         | 1 |
 | [7 Segment Display 1.8" Common Cathode](https://www.robotics.org.za/7SEG-018-GRE) | 4 |
 | [7 Segment Display 0.56" Common Cathode](https://www.robotics.org.za/7SEG-056-RED) | 1 |
 | [BC557 PNP Transistor](https://www.robotics.org.za/BC557)                | 7 |
